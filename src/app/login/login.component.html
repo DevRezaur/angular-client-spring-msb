@@ -1,0 +1,27 @@
+<div class="loginContainer">
+  <div class="grid-wrapper container">
+    <div class="image-box">
+      <img src="../../assets/image/login.svg" alt="Login Image" />
+    </div>
+    <div class="form-box">
+      <form>
+        <h1>Login Page</h1>
+        <label>Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+        />
+        <label>Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+        />
+        <button (click)="doLogin()">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
