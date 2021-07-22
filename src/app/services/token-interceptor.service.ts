@@ -30,10 +30,25 @@ export class TokenInterceptorService implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
+          if (error.error) {
+            if (error.error.code === 'auth-001') {
+              this.authService.logout();
+              return throwError({
+                status: '401',
+                error: 'Invalid credentials!',
+              });
+            } else if (error.error.code === 'auth-002') {
+              this.authService.logout();
+              return throwError({
+                status: '401',
+                error: 'You need to login first!',
+              });
+            }
+          }
           return this.handle401Error(request, next);
-        } else {
-          return throwError(error);
         }
+
+        return throwError(error);
       })
     );
   }
@@ -54,8 +69,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       return this.authService.refreshToken().pipe(
         switchMap((response: any) => {
           this.isRefreshing = false;
-          this.refreshTokenSubject.next(response.sccessToken);
-          localStorage.setItem('token', response.accessToken);
+          this.refreshTokenSubject.next(response.accessToken);
           return next.handle(this.addToken(request, response.accessToken));
         })
       );

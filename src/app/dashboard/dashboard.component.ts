@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.restApi.getAllUsers().subscribe(
       (response) => console.log(response),
-      (error) => console.log(error)
+      (error) => console.log('Error => ' + error)
     );
   }
 }

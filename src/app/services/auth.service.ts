@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { AuthDetails } from '../model/authDetails';
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   public login(username: string, password: string) {
     return this.http.post<any>('http://localhost:9191/auth/authenticate', {
@@ -13,23 +16,47 @@ export class AuthService {
   }
 
   public refreshToken() {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = this.getRefreshToken();
 
-    return this.http.post<any>('http://localhost:9191/auth/refreshtoken', {
-      token: refreshToken,
-    });
+    return this.http
+      .post<any>('http://localhost:9191/auth/refreshtoken', {
+        token: refreshToken,
+      })
+      .pipe(
+        tap((response) => {
+          const authDetails: AuthDetails = JSON.parse(
+            localStorage.getItem('authDetails') || '[]'
+          );
+          authDetails.token = response.accessToken;
+          this.saveAuthDetails(authDetails);
+        })
+      );
+  }
+
+  public saveAuthDetails(authDetails: AuthDetails) {
+    localStorage.setItem('authDetails', JSON.stringify(authDetails));
   }
 
   public isLoggedIn() {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('authDetails');
   }
 
   public logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('authDetails');
+    this.router.navigate(['/login']);
   }
 
   public getToken() {
-    return localStorage.getItem('token');
+    const authDetails: AuthDetails = JSON.parse(
+      localStorage.getItem('authDetails') || '[]'
+    );
+    return authDetails.token;
+  }
+
+  public getRefreshToken() {
+    const authDetails: AuthDetails = JSON.parse(
+      localStorage.getItem('authDetails') || '[]'
+    );
+    return authDetails.refreshToken;
   }
 }
