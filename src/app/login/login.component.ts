@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RestApiService } from '../rest-api.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
 
-  constructor(private restApi: RestApiService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router) {
     this.username = '';
     this.password = '';
   }
@@ -19,16 +19,14 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   doLogin() {
-    this.restApi.login(this.username, this.password).subscribe(
-      (data: any) => {
-        alert(data.token);
+    this.authService.login(this.username, this.password).subscribe(
+      (response) => {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
+        this.router.navigate(['/dashboard']);
       },
       (error) => {
-        if (error.status === 400) {
-          alert('Invalid credentials');
-        } else {
-          alert('Woops! Something went wrong !!!');
-        }
+        alert('Status: ' + error.status + '. ' + error.error);
       }
     );
   }
