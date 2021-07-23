@@ -13,6 +13,17 @@ body {
   overflow-x: hidden;
 }
 
+body.modal-open {
+  overflow: auto;
+}
+body.modal-open[style] {
+  padding-right: 0px !important;
+}
+
+.modal::-webkit-scrollbar {
+  width: 0 !important;
+}
+
 a {
   text-decoration: none;
 }

@@ -1,1 +1,117 @@
-<p>dashboard works!</p>
+<div class="dashboardContainer">
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Angular App</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mt-2 mb-3 my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Add User</a>
+          </li>
+        </ul>
+        <p class="text-light d-none d-lg-block pe-4 mb-0">
+          Welcome, {{ username }}
+        </p>
+        <button type="button" class="button" (click)="doLogout()">
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar End -->
+
+  <!--Users Section Start-->
+  <section class="container user-section">
+    <p *ngIf="users.length == 0">No User</p>
+    <div class="user-grid">
+      <div *ngFor="let user of users">
+        <div class="user-card">
+          <div class="top-div">
+            <img src="../../assets/image/avatar1.png" alt="User Image" />
+            <p class="nickname">{{ user?.fullname }}</p>
+          </div>
+          <div class="mid-div">
+            <div class="user-info">
+              <p>User Id:</p>
+              <p>{{ user?.id }}</p>
+            </div>
+            <div class="user-info">
+              <p>Nickname:</p>
+              <p>{{ user?.nickname }}</p>
+            </div>
+            <div class="user-info">
+              <p>Contact:</p>
+              <p>{{ user?.contact }}</p>
+            </div>
+            <div class="user-info">
+              <p>Email:</p>
+              <p>{{ user?.email }}</p>
+            </div>
+          </div>
+          <div class="bottom-div">
+            <i
+              data-bs-toggle="modal"
+              data-bs-target="#editUserModal"
+              class="fas fa-edit"
+            ></i>
+            <i class="fas fa-trash-alt"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Users Section End -->
+
+  <!-- Edit User Modal Start -->
+  <div
+    class="modal fade"
+    id="editUserModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="editUserModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Edit User Data</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form action="#">
+            <label for="fullname">Fullname</label>
+            <input type="text" id="fullname" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="button danger-button"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="button success-button">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Edit User Modal End -->
+</div>
