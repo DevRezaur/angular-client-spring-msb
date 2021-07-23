@@ -77,8 +77,8 @@ export class TokenInterceptorService implements HttpInterceptor {
       return this.refreshTokenSubject.pipe(
         filter((token) => token != null),
         take(1),
-        switchMap((jwt) => {
-          return next.handle(this.addToken(request, jwt));
+        switchMap((accessToken) => {
+          return next.handle(this.addToken(request, accessToken));
         })
       );
     }

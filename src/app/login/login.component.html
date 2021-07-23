@@ -3,23 +3,37 @@
     <div class="image-box">
       <img src="../../assets/image/login.svg" alt="Login Image" />
     </div>
-    <div class="form-box">
+    <div class="form-box" [formGroup]="loginForm">
       <form>
         <h1>Login Page</h1>
         <label>Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="username"
-        />
+        <input type="text" formControlName="username" />
+        <small
+          class="text-danger"
+          *ngIf="
+            loginForm.controls['username'].errors?.required &&
+            loginForm.controls['username'].dirty
+          "
+          >Username is required</small
+        >
         <label>Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-        />
+        <input type="password" formControlName="password" />
+        <small
+          class="text-danger"
+          *ngIf="
+            loginForm.controls['password'].errors?.required &&
+            loginForm.controls['password'].dirty
+          "
+          >Password is required</small
+        >
+        <small
+          class="text-danger"
+          *ngIf="
+            loginForm.controls['password'].errors?.minlength &&
+            loginForm.controls['password'].dirty
+          "
+          >Minimun length should be 5</small
+        >
         <button (click)="doLogin()">Login</button>
       </form>
     </div>

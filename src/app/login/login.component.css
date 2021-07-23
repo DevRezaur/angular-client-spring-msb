@@ -48,8 +48,8 @@ h1 {
 }
 
 .form-box label {
+  display: block;
   margin-bottom: 5px;
-  padding-left: 2px;
 }
 
 .form-box input {
@@ -59,6 +59,12 @@ h1 {
   padding: 0 10px;
   margin-bottom: 15px;
   border: none;
+}
+
+.form-box small {
+  display: block;
+  margin-top: -7px;
+  margin-bottom: 15px;
 }
 
 .form-box button {
