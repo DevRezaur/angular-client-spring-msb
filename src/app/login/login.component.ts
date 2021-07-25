@@ -34,7 +34,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         },
         (error) => {
-          alert('Status: ' + error.status + '. ' + error.error);
+          if (error.status === '401') alert(error.error);
+          else alert('Login Service Unavailable');
         }
       );
     }
